@@ -21,7 +21,6 @@
 			width: 450,
 
 			// selectors,
-
 			selector: ".mimo_open",
 			close: ".mimo_close",
 			modal: ".mimo_modal",
@@ -134,7 +133,7 @@
 			$(this.options.background).fadeTo(250, this.options.opacity);
 
 			this.$modal
-				.css({ width: this.options.width })
+				.css({ maxWidth: Number(this.options.width) })
 				.fadeTo(250, 1);
 			
 			this.centerModal();																
@@ -156,9 +155,14 @@
 				left = (clientWidth - width) / 2,					
 				top = (clientHeight - height) / 2;
 
+			// prevent weird resize effects
+			if (width < this.options.width) {
+				left = 0;
+			} 
+
 			// bounds checking
 			left = (left < 0) ? 0 : left;
-			top = (top < 0) ? 0 : (top > this.options.top) ? top = this.options.top : top;		
+			top = (top < 0) ? 0 : (top > this.options.top) ? top = this.options.top : top;	
 
 			top += $(window).scrollTop();
 
@@ -187,7 +191,7 @@
 
 	//------------------------------[ global event handlers ]------------------------------
 
-	$(window).on("resize", function () {					
+	$(window).on("resize", function () {	
 		// setTimeout 0 for older versions of safari 
 		setTimeout(function () { 
 			$(defaults.selector).each(function () { 			
