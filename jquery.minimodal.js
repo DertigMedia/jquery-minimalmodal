@@ -4,7 +4,6 @@
  * authored by Dertig Media (https://www.30.nl)
  * v. 0.8 - 2015
  *
-<<<<<<< HEAD
  * see https://minimalmodal.30.nl for examples
  * We used the awesome jQuery Boilterplate, http://jqueryboilerplate.com/
  *
