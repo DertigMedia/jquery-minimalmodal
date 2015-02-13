@@ -4,6 +4,7 @@
  * authored by Dertig Media (https://www.30.nl)
  * v. 0.8 - 2015
  *
+<<<<<<< HEAD
  * see https://minimalmodal.30.nl for examples
  * We used the awesome jQuery Boilterplate, http://jqueryboilerplate.com/
  *
@@ -21,6 +22,7 @@
 			width: 450,
 
 			// selectors,
+
 			selector: ".mimo_open",
 			close: ".mimo_close",
 			modal: ".mimo_modal",
@@ -206,5 +208,6 @@
 	//------------------------------[ global plugin init on document.ready ]------------------------------
 
 	$(defaults.selector).each(function () { $(this).minimodal(); });
+
 
 })(jQuery);
