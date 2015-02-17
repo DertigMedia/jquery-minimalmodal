@@ -131,7 +131,7 @@
 			}
 
 			$(this.options.background)
-				.css({ backgroundColor: this.options.color })
+				.css({ backgroundColor: this.options["background-color"] })
 				.fadeTo(250, this.options.opacity);
 
 			this.$modal				
