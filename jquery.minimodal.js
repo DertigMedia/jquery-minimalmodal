@@ -16,8 +16,7 @@
         defaults = {
 
         	// default options
-			opacity: 0.4,
-			color: '#000',
+			opacity: 0.4,			
 			top: 100,
 			width: 520,
 
@@ -146,7 +145,8 @@
 		closeModal: function () {
 
 			$(this.options.background + ", " + this.options.modal).hide();
-
+			$(this.options.background).css({ backgroundColor: "" });
+			
 		},
 
 		centerModal: function () {			
