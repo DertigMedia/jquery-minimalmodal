@@ -15,7 +15,7 @@
     z-index:11;
     left:0;
     right: 0;
-    top:0;    
+    top:0;      
     box-shadow: 0px 0px 8px 4px rgba(0, 0, 0, 0.15);
     display: none;
     padding: 0px;
@@ -36,7 +36,7 @@
 
 #mimo_bg {
     position:fixed;
-    background-color:#000;
+    background-color: #000;    
     left:0;
     top:0;
     width: 200%;

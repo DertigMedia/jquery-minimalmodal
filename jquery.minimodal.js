@@ -16,11 +16,12 @@
         defaults = {
 
         	// default options
-			opacity: 0.3,
+			opacity: 0.4,
+			color: '#000',
 			top: 100,
-			width: 450,
+			width: 520,
 
-			// selectors,
+			// selectors,			
 			selector: ".mimo_open",
 			close: ".mimo_close",
 			modal: ".mimo_modal",
@@ -103,7 +104,7 @@
 			$closeButton = this.$modal.find(this.options.close);
 			// create close button if one does not exist already.
 			if (!$closeButton.length) {
-			 	$("<div class=" + defaults.close.replace(/\./, "") + ">&#x2716;</div>")
+			 	$("<div class=" + defaults.close.replace(/\./, "") + ">&#10799;</div>")
 			 		.prependTo(this.$modal);
 			 	this.options.close = defaults.close;
 			}
@@ -130,9 +131,11 @@
 				
 			}
 
-			$(this.options.background).fadeTo(250, this.options.opacity);
+			$(this.options.background)
+				.css({ backgroundColor: this.options.color })
+				.fadeTo(250, this.options.opacity);
 
-			this.$modal
+			this.$modal				
 				.css({ maxWidth: Number(this.options.width) })
 				.fadeTo(250, 1);
 			
