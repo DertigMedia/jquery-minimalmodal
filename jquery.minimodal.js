@@ -11,23 +11,22 @@
 
 ;(function($) {
 
-	var pluginName = "minimodal",        
-        dataKey = "plugin_" + pluginName,
-        defaults = {
-
-        	// default options
-			opacity: 0.4,			
+	var pluginName = "minimodal",
+		dataKey = "plugin_" + pluginName,
+		defaults = {
+			// default options
+			opacity: 0.3,			
 			top: 100,
 			width: 520,
-
 			// selectors,			
 			selector: ".mimo_open",
 			close: ".mimo_close",
 			modal: ".mimo_modal",
 			background: "#mimo_bg"
-        };
-
-    //------------------------------[ private methods ]------------------------------
+		},
+		windowWidth;
+		
+	//------------------------------[ private methods ]------------------------------
 
 	// see
 	// http://stackoverflow.com/questions/1086404/string-to-object-in-js
@@ -69,7 +68,8 @@
 		var attributes = stringToObject(this.$modal.data('mimo'));
 		
 		this.options = $.extend({}, defaults, attributes, options);
-		this.options.close = "." + this.options.close.replace(/["'\.]/g, "");		
+		this.options.close = "." + this.options.close.replace(/["'\.]/g, "");	
+		this.options.top = Number(this.options.top);
 		this.element = element;
 
 		this.init();
@@ -103,7 +103,7 @@
 			$closeButton = this.$modal.find(this.options.close);
 			// create close button if one does not exist already.
 			if (!$closeButton.length) {
-			 	$("<div class=" + defaults.close.replace(/\./, "") + ">&#10799;</div>")
+			 	$("<div class=" + defaults.close.replace(/\./, "") + ">&#x2715;</div>")
 			 		.prependTo(this.$modal);
 			 	this.options.close = defaults.close;
 			}
@@ -150,18 +150,17 @@
 		},
 
 		centerModal: function () {			
+			
+			// force a redraw of the modal 
+			// this fixes a lot of window resize issues on several devices
+			this.$modal.css({ left: 0 });
 
 			var width = this.$modal.outerWidth(true),
 				height = this.$modal.outerHeight(true),
-				clientWidth = $(window).width(),
-				clientHeight = $(window).height(),
-				left = (clientWidth - width) / 2,					
-				top = (clientHeight - height) / 2;
-
-			// prevent weird resize effects
-			if (width < this.options.width) {
-				left = 0;
-			} 
+				clientWidth = $(window).outerWidth(true),
+				clientHeight = $(window).outerHeight(true),
+				left = (clientWidth - width) / 2 | 0,					
+				top = (clientHeight - height) / 2 | 0;
 
 			// bounds checking
 			left = (left < 0) ? 0 : left;
@@ -170,8 +169,8 @@
 			top += $(window).scrollTop();
 
 			this.$modal.css({
-				left: left,
-				top: top
+				left: Number(left),
+				top: Number(top)
 			});
 
 		}
@@ -194,13 +193,21 @@
 
 	//------------------------------[ global event handlers ]------------------------------
 
-	$(window).on("resize", function () {	
-		// setTimeout 0 for older versions of safari 
-		setTimeout(function () { 
-			$(defaults.selector).each(function () { 			
-				$.data( this, dataKey ).centerModal();
-			});
-		}, 0);
+	// store windowWidth to check if resize events are actual resizes, not scroll events
+	// see http://stackoverflow.com/questions/17328742/
+	windowWidth = $(window).width();	
+
+	$(window).on("resize", function (event) {	
+		if ($(window).width() == windowWidth) {
+			return;
+		}
+
+		windowWidth = $(window).width();
+			
+		$(defaults.selector).each(function () { 	
+			$.data( this, dataKey ).centerModal();				
+		});
+		
 	});
 			
 	$(document).on("keydown", function(event) {				
@@ -214,6 +221,5 @@
 	//------------------------------[ global plugin init on document.ready ]------------------------------
 
 	$(defaults.selector).each(function () { $(this).minimodal(); });
-
 
 })(jQuery);
