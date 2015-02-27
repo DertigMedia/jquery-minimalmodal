@@ -15,7 +15,7 @@
 		dataKey = "plugin_" + pluginName,
 		defaults = {
 			// default options
-			opacity: 0.3,			
+			bg_opacity: 0.3,				
 			top: 100,
 			width: 520,
 			// selectors,			
@@ -131,8 +131,8 @@
 			}
 
 			$(this.options.background)
-				.css({ backgroundColor: this.options["background-color"] })
-				.fadeTo(250, this.options.opacity);
+				.css({ backgroundColor: this.options.bg_color })
+				.fadeTo(250, this.options.bg_opacity);
 
 			this.$modal				
 				.css({ maxWidth: Number(this.options.width) })
