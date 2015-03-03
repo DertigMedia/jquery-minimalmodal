@@ -23,6 +23,7 @@ Your modal should be up and running. The default values for the modal are 100 fo
 ***
 #Options
 Option|Default|Description
+---|---|---
 top|100|Top offset in pixels(ignored on smaller screens)
 width|520|Width in pixels(ignored on smaller screens)
 overlay|#000000|Overlay color, hex or rgb(a)
