@@ -68,4 +68,5 @@ Add your own CSS and style the modal as you please. In the custom example above 
 ```html
 <div id="my_modal" class="mimo_modal" style="background-color:transparent;">My modal content</div>
 ```
-
+#Todo
+* add functions to open modal manually through script call
