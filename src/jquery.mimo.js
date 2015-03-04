@@ -20,7 +20,7 @@
 			width: 520,
 			opacity: 0.3,			
 
-			// selectors
+			// selectors			
 			close: ".mimo_close",			
 			background: "#mimo_bg",
 			onAfterOpen: function () {}
@@ -123,7 +123,32 @@
 				
 			};
 
+			this.onResize = function (event) {
+
+				// store windowWidth to check if resize events are actual resizes, not scroll events
+				// see http://stackoverflow.com/questions/17328742/				
+
+				if ($(window).width() == self.windowWidth) {
+					return;
+				}
+
+				self.windowWidth = $(window).width();
+
+				self.centerModal(); 
+
+			};
+
+			this.onKeydown = function (event ) {				
+			
+				if (event.keyCode === 27) {
+					self.closeModal();
+				}
+		
+			};
+
 			$(this.element).on("click", this.onClick);
+			$(window).on("resize", this.onResize);
+			$(document).on("keydown", this.onKeydown);
 
 			$closeButton = this.$modal.find(this.options.close);
 			// create close button if one does not exist already.
@@ -138,6 +163,8 @@
 		destroy: function () {
 
 			$(this.element).off("click", this.onClick);
+			$(window).off("resize", this.onResize);
+			$(document).off("keydown", this.onKeydown);
 			
 		},
 
@@ -226,33 +253,6 @@
 					$.data( this, dataKey, new Minimodal( this, options ) );
 			});
 	};
-
-	//------------------------------[ global event handlers ]------------------------------
-
-	// store windowWidth to check if resize events are actual resizes, not scroll events
-	// see http://stackoverflow.com/questions/17328742/
-	windowWidth = $(window).width();	
-
-	$(window).on("resize", function (event) {	
-		if ($(window).width() == windowWidth) {
-			return;
-		}
-
-		windowWidth = $(window).width();
-			
-		$(defaults.selector).each(function () { 	
-			$.data( this, dataKey ).centerModal();				
-		});
-		
-	});
-			
-	$(document).on("keydown", function(event) {				
-			
-		if (event.keyCode === 27) {
-			$(defaults.selector).each(function () { $.data( this, dataKey ).closeModal(); });
-		}
-		
-	});
 
 	//------------------------------[ global plugin init on document.ready ]------------------------------
 

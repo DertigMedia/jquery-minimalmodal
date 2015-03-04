@@ -1,7 +1,7 @@
 {
   "name": "minimodal",
   "version": "0.8.0",
-  "repository" : {
+  "repository": {
     "type": "git",
     "url": "https://github.com/DertigMedia/jquery-minimalmodal.git"
   },
@@ -9,5 +9,8 @@
     "grunt": "^0.4.5",
     "grunt-contrib-cssmin": "0.6.1",
     "grunt-contrib-uglify": "^0.7.0"
+  },
+  "dependencies": {
+    "grunt-contrib-watch": "^0.6.1"
   }
 }
