@@ -60,6 +60,25 @@
 
 	};
 
+	var lazyLoadImage = function (element) {
+
+		if (!$(element).attr("data-mimo-src")) {
+			return;
+		}
+
+		var image = new Image(),
+			$element = $(element),
+			source = $element.attr("data-mimo-src");
+
+		image.src = source;
+		$element.css({ opacity: 0 });
+		$(image).on("load", function () {			
+			$element.attr("src", source)
+				.animate({ opacity: 1 });
+		});
+
+	};
+
 	//------------------------------[ constructor ]------------------------------
 
 	function Minimodal(element, options) {
@@ -144,7 +163,13 @@
 				.css({ maxWidth: Number(this.options.width) })
 				.fadeTo(250, 1);
 			
-			this.centerModal();				
+			this.centerModal();	
+
+			this.$modal.find("img").each(function () {
+				lazyLoadImage(this);
+
+				
+			});
 
 			if (typeof this.options.onAfterOpen === 'function')	{
 				this.options.onAfterOpen();
