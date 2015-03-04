@@ -3,16 +3,18 @@ module.exports = function (grunt) {
 	grunt.initConfig({
 		pkg: grunt.file.readJSON('package.json'),
 		uglify: {
-			options: {},
+			options: {
+				banner:'/* <%= pkg.name %> v. <%= pkg.version %> */\n'
+			},
 			build: {
-				src: 'jquery.minimodal.js',
-				dest:'jquery.minimodal.min.js'
+				src: 'src/jquery.mimo.js',
+				dest:'dest/jquery.mimo.min.js'
 			}
 		},
 		cssmin: {
 			target: {
 				files: {
-					'jquery.minimodal.min.css': ['minimodal.css']
+					'dest/jquery.mimo.min.css': ['src/jquery.mimo.css']
 				}
 			}
 		}

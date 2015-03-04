@@ -14,15 +14,16 @@
 	var pluginName = "minimodal",
 		dataKey = "plugin_" + pluginName,
 		defaults = {
+			
 			// default options
 			opacity: 0.3,				
 			top: 100,
 			width: 520,
-			// selectors,			
-			selector: ".mimo_open",
-			close: ".mimo_close",
-			modal: ".mimo_modal",
-			background: "#mimo_bg"
+
+			// selectors
+			close: ".mimo_close",			
+			background: "#mimo_bg",
+			onAfterOpen: function () {}
 		},
 		windowWidth;
 		
@@ -62,15 +63,19 @@
 	//------------------------------[ constructor ]------------------------------
 
 	function Minimodal(element, options) {
-
-		this.$modal = $("#" + $(element).attr("href").replace("#", ""));
 		
-		var attributes = stringToObject(this.$modal.data('mimo'));
-		
-		this.options = $.extend({}, defaults, attributes, options);
+		var attributes = stringToObject($(element).data('mimo'));		
+		this.options = $.extend({}, defaults, attributes, options);		
 		this.options.close = "." + this.options.close.replace(/["'\.]/g, "");	
 		this.options.top = Number(this.options.top);
-		this.element = element;
+
+		if (!this.options.modal) {
+			throw "Cannot start minimodal without modal attribute in options";
+		}
+		
+		this.element = element;		
+
+		this.$modal = $("#" + this.options.modal.replace("#", ""));		
 
 		this.init();
 
@@ -138,13 +143,18 @@
 				.css({ maxWidth: Number(this.options.width) })
 				.fadeTo(250, 1);
 			
-			this.centerModal();																
+			this.centerModal();				
+
+			if (typeof this.options.onAfterOpen === 'function')	{
+				this.options.onAfterOpen();
+			}											
 			
 		},
 
 		closeModal: function () {
 
-			$(this.options.background + ", " + this.options.modal).hide();
+			$(this.options.background).hide();
+			this.$modal.hide();
 			$(this.options.background).css({ backgroundColor: "" });
 			
 		},
@@ -220,6 +230,8 @@
 
 	//------------------------------[ global plugin init on document.ready ]------------------------------
 
-	$(defaults.selector).each(function () { $(this).minimodal(); });
+	$(function () {
+		$("*[data-mimo]").each(function () { $(this).minimodal(); });
+	});
 
 })(jQuery);
