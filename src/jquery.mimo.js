@@ -15,10 +15,10 @@
 		dataKey = "plugin_" + pluginName,
 		defaults = {
 			
-			// default options
-			opacity: 0.3,				
+			// default options			
 			top: 100,
 			width: 520,
+			opacity: 0.3,			
 
 			// selectors
 			close: ".mimo_close",			
@@ -76,6 +76,7 @@
 		this.element = element;		
 
 		this.$modal = $("#" + this.options.modal.replace("#", ""));		
+		this.$modal.addClass(this.options.class);
 
 		this.init();
 
@@ -136,7 +137,7 @@
 			}
 
 			$(this.options.background)
-				.css({ backgroundColor: this.options.color })
+				.css({ backgroundColor: this.options.overlay })
 				.fadeTo(250, this.options.opacity);
 
 			this.$modal				

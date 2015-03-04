@@ -8,13 +8,13 @@ module.exports = function (grunt) {
 			},
 			build: {
 				src: 'src/jquery.mimo.js',
-				dest:'dest/jquery.mimo.min.js'
+				dest:'dist/jquery.mimo.min.js'
 			}
 		},
 		cssmin: {
 			target: {
 				files: {
-					'dest/jquery.mimo.min.css': ['src/jquery.mimo.css']
+					'dist/jquery.mimo.min.css': ['src/jquery.mimo.css']
 				}
 			}
 		}
