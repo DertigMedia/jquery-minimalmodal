@@ -14,15 +14,16 @@
 	var pluginName = "minimodal",
 		dataKey = "plugin_" + pluginName,
 		defaults = {
-			// default options
-			bg_opacity: 0.3,				
+			
+			// default options			
 			top: 100,
 			width: 520,
-			// selectors,			
-			selector: ".mimo_open",
-			close: ".mimo_close",
-			modal: ".mimo_modal",
-			background: "#mimo_bg"
+			opacity: 0.3,			
+
+			// selectors			
+			close: ".mimo_close",			
+			background: "#mimo_bg",
+			onAfterOpen: function () {}
 		},
 		windowWidth;
 		
@@ -59,18 +60,42 @@
 
 	};
 
+	var lazyLoadImage = function (element) {
+
+		if (!$(element).attr("data-mimo-src")) {
+			return;
+		}
+
+		var image = new Image(),
+			$element = $(element),
+			source = $element.attr("data-mimo-src");
+
+		image.src = source;
+		$element.css({ opacity: 0 });
+		$(image).on("load", function () {			
+			$element.attr("src", source)
+				.animate({ opacity: 1 });
+		});
+
+	};
+
 	//------------------------------[ constructor ]------------------------------
 
 	function Minimodal(element, options) {
-
-		this.$modal = $("#" + $(element).attr("href").replace("#", ""));
 		
-		var attributes = stringToObject(this.$modal.data('mimo'));
-		
-		this.options = $.extend({}, defaults, attributes, options);
+		var attributes = stringToObject($(element).data('mimo'));		
+		this.options = $.extend({}, defaults, attributes, options);		
 		this.options.close = "." + this.options.close.replace(/["'\.]/g, "");	
 		this.options.top = Number(this.options.top);
-		this.element = element;
+
+		if (!this.options.modal) {
+			throw "Cannot start minimodal without modal attribute in options";
+		}
+		
+		this.element = element;		
+
+		this.$modal = $("#" + this.options.modal.replace("#", ""));		
+		this.$modal.addClass(this.options.class);
 
 		this.init();
 
@@ -98,7 +123,32 @@
 				
 			};
 
+			this.onResize = function (event) {
+
+				// store windowWidth to check if resize events are actual resizes, not scroll events
+				// see http://stackoverflow.com/questions/17328742/				
+
+				if ($(window).width() == self.windowWidth) {
+					return;
+				}
+
+				self.windowWidth = $(window).width();
+
+				self.centerModal(); 
+
+			};
+
+			this.onKeydown = function (event ) {				
+			
+				if (event.keyCode === 27) {
+					self.closeModal();
+				}
+		
+			};
+
 			$(this.element).on("click", this.onClick);
+			$(window).on("resize", this.onResize);
+			$(document).on("keydown", this.onKeydown);
 
 			$closeButton = this.$modal.find(this.options.close);
 			// create close button if one does not exist already.
@@ -113,6 +163,8 @@
 		destroy: function () {
 
 			$(this.element).off("click", this.onClick);
+			$(window).off("resize", this.onResize);
+			$(document).off("keydown", this.onKeydown);
 			
 		},
 
@@ -131,20 +183,31 @@
 			}
 
 			$(this.options.background)
-				.css({ backgroundColor: this.options.bg_color })
-				.fadeTo(250, this.options.bg_opacity);
+				.css({ backgroundColor: this.options.overlay })
+				.fadeTo(250, this.options.opacity);
 
 			this.$modal				
 				.css({ maxWidth: Number(this.options.width) })
 				.fadeTo(250, 1);
 			
-			this.centerModal();																
+			this.centerModal();	
+
+			this.$modal.find("img").each(function () {
+				lazyLoadImage(this);
+
+				
+			});
+
+			if (typeof this.options.onAfterOpen === 'function')	{
+				this.options.onAfterOpen();
+			}											
 			
 		},
 
 		closeModal: function () {
 
-			$(this.options.background + ", " + this.options.modal).hide();
+			$(this.options.background).hide();
+			this.$modal.hide();
 			$(this.options.background).css({ backgroundColor: "" });
 			
 		},
@@ -191,35 +254,10 @@
 			});
 	};
 
-	//------------------------------[ global event handlers ]------------------------------
-
-	// store windowWidth to check if resize events are actual resizes, not scroll events
-	// see http://stackoverflow.com/questions/17328742/
-	windowWidth = $(window).width();	
-
-	$(window).on("resize", function (event) {	
-		if ($(window).width() == windowWidth) {
-			return;
-		}
-
-		windowWidth = $(window).width();
-			
-		$(defaults.selector).each(function () { 	
-			$.data( this, dataKey ).centerModal();				
-		});
-		
-	});
-			
-	$(document).on("keydown", function(event) {				
-			
-		if (event.keyCode === 27) {
-			$(defaults.selector).each(function () { $.data( this, dataKey ).closeModal(); });
-		}
-		
-	});
-
 	//------------------------------[ global plugin init on document.ready ]------------------------------
 
-	$(defaults.selector).each(function () { $(this).minimodal(); });
+	$(function () {
+		$("*[data-mimo]").each(function () { $(this).minimodal(); });
+	});
 
 })(jQuery);

@@ -71,3 +71,8 @@ We don't like resources being loaded if they are not displayed in the viewport. 
 ```html
 <div id="my_modal" class="mimo_modal"><img data-mimo-src="my_image.jpg" alt=""/>My modal content</div>
 ```
+<<<<<<< HEAD
+=======
+#Todo
+* add functions to open modal manually through script call
+>>>>>>> origin/master
