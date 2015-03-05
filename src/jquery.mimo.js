@@ -11,7 +11,7 @@
 
 ;(function($) {
 
-	var pluginName = "minimodal",
+	var pluginName = "mimo",
 		dataKey = "plugin_" + pluginName,
 		defaults = {
 			
@@ -77,6 +77,11 @@
 				.animate({ opacity: 1 });
 		});
 
+		// IE8 fix
+		if (image.complete) {
+			$(image).trigger("load");
+		}
+
 	};
 
 	//------------------------------[ constructor ]------------------------------
@@ -95,7 +100,7 @@
 		this.element = element;		
 
 		this.$modal = $("#" + this.options.modal.replace("#", ""));		
-		this.$modal.addClass(this.options.class);
+		this.$modal.addClass(this.options.skin);
 
 		this.init();
 
@@ -257,7 +262,7 @@
 	//------------------------------[ global plugin init on document.ready ]------------------------------
 
 	$(function () {
-		$("*[data-mimo]").each(function () { $(this).minimodal(); });
+		$("[data-mimo]").each(function () { $(this).mimo(); });
 	});
 
 })(jQuery);
