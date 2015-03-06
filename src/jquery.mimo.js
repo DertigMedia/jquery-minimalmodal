@@ -60,7 +60,7 @@
 
 	};
 
-	var lazyLoadImage = function (element) {
+	var lazyLoadImage = function (element, callback) {
 
 		if (!$(element).attr("data-mimo-src")) {
 			return;
@@ -75,6 +75,9 @@
 		$(image).on("load", function () {			
 			$element.attr("src", source)
 				.animate({ opacity: 1 });
+			if (typeof callback === 'function') {
+				callback();
+			}
 		});
 
 		// IE8 fix
@@ -181,6 +184,8 @@
 
 		openModal: function () {
 
+			var self = this;
+
 			// create a background div if one does not exist yet
 			if (!$(this.options.background).length) {
 				$("body").append($("<div></div>").attr("id", this.options.background.replace(/#/g, "")));
@@ -198,7 +203,7 @@
 			this.centerModal();	
 
 			this.$modal.find("img").each(function () {
-				lazyLoadImage(this);
+				lazyLoadImage(this, function () { self.centerModal(); });
 
 				
 			});
