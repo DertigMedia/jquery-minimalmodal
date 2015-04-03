@@ -1,0 +1,25 @@
+{
+	"name": "miniModal",
+	"description": "the best jQuery modal for responsive dialog windows we could build",
+	"version": "1.0"
+	"author": [ "30 media <post@30.nl>" ],
+	"keywords": [ "modal", "minimal", "light-weight", "jquery" ],
+	"readme": "README.md",
+
+	"main": [ "./dist/jquery.mimo.min.js", "./dist/jquery.mimo.min.css" ],
+
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/DertigMedia/jquery-minimalmodal.git"
+	},
+	"license": [
+		{
+			"type": "GPL-3.0",
+			"url": "https://www.gnu.org/licenses/gpl-3.0.html"
+		}
+	],
+	"ignore" : [
+		
+	}
+	
+}
