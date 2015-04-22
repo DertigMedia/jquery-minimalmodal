@@ -1,5 +1,5 @@
 #MiMo - Minimal Modal
-MinimalModal is the best jQuery modal for responsive dialog windows we could build. MinimalModal is available under the GPLv3 license. Please try a few modals on https://mimo.30.nl
+MinimalModal is the best jQuery modal for responsive dialog windows we could build. MinimalModal is available under the GPLv3 license. Please try a few modals on http://mimo.30.nl
 
 ***
 # Why use this modal?
